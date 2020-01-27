@@ -15,9 +15,10 @@ public interface Imvp {
     interface ICapPresenter {
         void attachView(ICapView capView);
         void detachView();
+        void startTimer();
     }
 
     interface IModel{
-
+        void startGame();
     }
 }

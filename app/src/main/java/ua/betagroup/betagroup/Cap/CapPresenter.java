@@ -22,4 +22,9 @@ public class CapPresenter implements Imvp.ICapPresenter {
     public void detachView() {
         capView = null;
     }
+
+    @Override
+    public void startTimer() {
+        model.startGame();
+    }
 }

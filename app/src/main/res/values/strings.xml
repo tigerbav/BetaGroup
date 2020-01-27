@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Beta Group</string>
     <string name="title_Cap">Cap</string>
+    <string name="textButton">Click Me!</string>
+    <string name="zero">Счет: 0</string>
+    <string name="timer">Осталось 60 сек</string>
 </resources>
