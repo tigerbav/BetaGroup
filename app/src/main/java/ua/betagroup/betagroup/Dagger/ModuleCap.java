@@ -4,7 +4,6 @@ import dagger.Module;
 import dagger.Provides;
 import ua.betagroup.betagroup.Cap.CapPresenter;
 import ua.betagroup.betagroup.Imvp;
-import ua.betagroup.betagroup.Model.Model;
 
 @Module
 public class ModuleCap {
@@ -14,9 +13,4 @@ public class ModuleCap {
         return new CapPresenter(model);
     }
 
-    @Provides
-    @UserScope
-    Imvp.IModel provideModel() {
-        return new Model();
-    }
 }

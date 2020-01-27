@@ -15,10 +15,18 @@ public interface Imvp {
     interface ICapPresenter {
         void attachView(ICapView capView);
         void detachView();
-        void startTimer();
+    }
+
+    interface ICheckingView {
+
+    }
+    interface ICheckingPresenter {
+        void attachView(ICheckingView capView);
+        void detachView();
+        void checkDevice();
     }
 
     interface IModel{
-        void startGame();
+        void checkDevice();
     }
 }
