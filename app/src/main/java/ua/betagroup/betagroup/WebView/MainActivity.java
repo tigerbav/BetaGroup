@@ -4,7 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
+
+import com.appsflyer.AppsFlyerConversionListener;
+import com.appsflyer.AppsFlyerLib;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -17,10 +23,11 @@ public class MainActivity extends AppCompatActivity implements Imvp.IMainView {
     Imvp.IMainPresenter mainPresenter;
 
     private WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+                setContentView(R.layout.activity_main);
 
         DaggerIComponent.builder().build().inject(this);
         mainPresenter.attachView(this);

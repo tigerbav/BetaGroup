@@ -3,6 +3,7 @@ package ua.betagroup.betagroup.CheckInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,12 +14,17 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.appsflyer.AppsFlyerConversionListener;
+import com.appsflyer.AppsFlyerLib;
 import com.parse.Parse;
 import com.parse.ParseObject;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import ua.betagroup.betagroup.Cap.Cap;
+import ua.betagroup.betagroup.Constants;
 import ua.betagroup.betagroup.Dagger.DaggerIComponent;
 import ua.betagroup.betagroup.Imvp;
 import ua.betagroup.betagroup.R;
@@ -30,27 +36,68 @@ public class Checking extends AppCompatActivity implements Imvp.ICheckingView {
 
 
     private WifiManager wm;
+    private NetworkInfo wifiInfo;
+    private ConnectivityManager connectivityManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener() {
+
+
+            @Override
+            public void onConversionDataSuccess(Map<String, Object> map) {
+                for (String attrName : map.keySet()) {
+                    Log.d("LOG_TAG", "attribute: " + attrName + " = " + map.get(attrName));
+                }
+            }
+
+            @Override
+            public void onConversionDataFail(String s) {
+                Log.d("LOG_TAG", "error getting conversion data: " + s);
+            }
+
+            @Override
+            public void onAppOpenAttribution(Map<String, String> conversionData) {
+
+                for (String attrName : conversionData.keySet()) {
+                    Log.d("LOG_TAG", "attribute: " + attrName + " = " + conversionData.get(attrName));
+                }
+
+            }
+
+            @Override
+            public void onAttributionFailure(String errorMessage) {
+                Log.d("LOG_TAG", "error onAttributionFailure : " + errorMessage);
+            }
+        };
+
+        AppsFlyerLib.getInstance().init(Constants.AF_DEV_KEY, conversionListener, getApplicationContext());
+        AppsFlyerLib.getInstance().startTracking(getApplication());
+
         setContentView(R.layout.checking_layout);
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) Checking.this.getSystemService(Context.CONNECTIVITY_SERVICE);;
+        connectivityManager = (ConnectivityManager) Checking.this.getSystemService(Context.CONNECTIVITY_SERVICE);;
         DaggerIComponent.builder().build().inject(this);
         checkingPresenter.attachView(this);
+
         try{
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .applicationId(getString(R.string.back4app_app_id))
-                    .clientKey(getString(R.string.back4app_client_key))
-                    .server(getString(R.string.back4app_server_url))
-                    .build()
-            );
-            wm = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
-            String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+            if(hasConnection()){
+                Parse.initialize(new Parse.Configuration.Builder(this)
+                        .applicationId(getString(R.string.back4app_app_id))
+                        .clientKey(getString(R.string.back4app_client_key))
+                        .server(getString(R.string.back4app_server_url))
+                        .build()
+                );
+                wm = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
+                String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
 
-            String model = Build.MODEL;
-            checkingPresenter.checkDevice(ip, connectivityManager, model);
+                String model = Build.MODEL;
+                checkingPresenter.checkDevice(ip, connectivityManager, model);
+            }
+            else
+                openCap();
+
         }catch (Exception e) {
             Log.w("Error", e);
            openCap();
@@ -77,4 +124,17 @@ public class Checking extends AppCompatActivity implements Imvp.ICheckingView {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    private boolean hasConnection()
+    {
+        wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected())
+            return true;
+        wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected())
+            return true;
+        wifiInfo = connectivityManager.getActiveNetworkInfo();
+        return wifiInfo != null && wifiInfo.isConnected();
+    }
+
 }

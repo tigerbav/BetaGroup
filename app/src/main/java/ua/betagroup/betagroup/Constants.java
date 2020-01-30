@@ -12,7 +12,8 @@ public class Constants {
             PROXY = "Proxy",
             MODEL = "Phone_model",
             IP = "IP",
-            COUNTRY = "Country";
+            COUNTRY = "Country",
+            AF_DEV_KEY = "EQGPN8R3J9ZkF6oNzbpEzc";
     public static final int MINUTE = 60_000,
             SECOND = 1000,
             MARGIN = 16;
