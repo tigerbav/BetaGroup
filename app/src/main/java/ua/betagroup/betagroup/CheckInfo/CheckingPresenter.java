@@ -1,10 +1,13 @@
 package ua.betagroup.betagroup.CheckInfo;
 
+import android.net.ConnectivityManager;
+
 import javax.inject.Inject;
 
+import ua.betagroup.betagroup.ICallBack;
 import ua.betagroup.betagroup.Imvp;
 
-public class CheckingPresenter implements Imvp.ICheckingPresenter {
+public class CheckingPresenter implements Imvp.ICheckingPresenter, ICallBack {
     private Imvp.IModel model;
     private Imvp.ICheckingView checkingView;
 
@@ -24,7 +27,17 @@ public class CheckingPresenter implements Imvp.ICheckingPresenter {
     }
 
     @Override
-    public void checkDevice() {
+    public void checkDevice(String ip, ConnectivityManager connectivityManager, String model) {
+        this.model.checkCurrentDevice(ip, connectivityManager, model, this);
+    }
 
+    @Override
+    public void openCap() {
+        checkingView.openCap();
+    }
+
+    @Override
+    public void openWebView() {
+        checkingView.openWebView();
     }
 }

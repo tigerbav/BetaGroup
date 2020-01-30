@@ -7,7 +7,12 @@ public class Constants {
             RECORD = "Рекорд",
             SCORE_TEXT = "Счет: ",
             LEFT_TIME = "Осталось ",
-            SEC_TEXT = " сек";
+            SEC_TEXT = " сек",
+            TIME_ZONE = "Time_zone",
+            PROXY = "Proxy",
+            MODEL = "Phone_model",
+            IP = "IP",
+            COUNTRY = "Country";
     public static final int MINUTE = 60_000,
             SECOND = 1000,
             MARGIN = 16;
