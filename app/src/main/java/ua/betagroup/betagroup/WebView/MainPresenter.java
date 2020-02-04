@@ -22,4 +22,9 @@ public class MainPresenter implements Imvp.IMainPresenter {
     public void detachView() {
         mainView = null;
     }
+
+    @Override
+    public String setUrl() {
+        return model.returnUrl();
+    }
 }

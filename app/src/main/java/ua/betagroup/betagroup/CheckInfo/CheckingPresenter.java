@@ -1,6 +1,9 @@
 package ua.betagroup.betagroup.CheckInfo;
 
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -27,8 +30,13 @@ public class CheckingPresenter implements Imvp.ICheckingPresenter, ICallBack {
     }
 
     @Override
-    public void checkDevice(String ip, ConnectivityManager connectivityManager, String model) {
-        this.model.checkCurrentDevice(ip, connectivityManager, model, this);
+    public void checkDevice(String ip, ConnectivityManager connectivityManager, String model, String locale) {
+        this.model.checkCurrentDevice(ip, connectivityManager, model, locale,  this);
+    }
+
+    @Override
+    public void setSharedPreferences(SharedPreferences sharedPreferences) {
+        model.setSharedPreferences(sharedPreferences);
     }
 
     @Override

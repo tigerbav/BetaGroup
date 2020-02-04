@@ -13,8 +13,15 @@ public class Constants {
             MODEL = "Phone_model",
             IP = "IP",
             COUNTRY = "Country",
-            AF_DEV_KEY = "EQGPN8R3J9ZkF6oNzbpEzc";
+            AF_DEV_KEY = "EQGPN8R3J9ZkF6oNzbpEzc",
+            URL = "Url";
     public static final int MINUTE = 60_000,
             SECOND = 1000,
             MARGIN = 16;
+
+    public static final String[] SNG = {"Большие бонусы, начни играть без риска!",
+            "Большие выигрыши ждут тебя! Бонусы уже начислены", "Думаешь как стартануть? Не тяни, заходи прямо сейчас"},
+    ENG = {"We Bet you'll love it! Play now!" ,
+            "Your road to Riches! Where players win.",
+            "Where The Winners Play! The Wonder of It All"};
 }

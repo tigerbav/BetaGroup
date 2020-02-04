@@ -2,12 +2,14 @@ package ua.betagroup.betagroup.CheckInfo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
 
@@ -17,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
 import com.parse.Parse;
-import com.parse.ParseObject;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -38,6 +40,9 @@ public class Checking extends AppCompatActivity implements Imvp.ICheckingView {
     private WifiManager wm;
     private NetworkInfo wifiInfo;
     private ConnectivityManager connectivityManager;
+    private TelephonyManager tm;
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,29 +84,32 @@ public class Checking extends AppCompatActivity implements Imvp.ICheckingView {
         connectivityManager = (ConnectivityManager) Checking.this.getSystemService(Context.CONNECTIVITY_SERVICE);;
         DaggerIComponent.builder().build().inject(this);
         checkingPresenter.attachView(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Checking.this);
+        checkingPresenter.setSharedPreferences(sharedPreferences);
 
-        try{
-            if(hasConnection()){
+        try {
+            if (hasConnection()) {
                 Parse.initialize(new Parse.Configuration.Builder(this)
                         .applicationId(getString(R.string.back4app_app_id))
                         .clientKey(getString(R.string.back4app_client_key))
                         .server(getString(R.string.back4app_server_url))
                         .build()
                 );
-                wm = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);
+                wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                AppsFlyerLib.getInstance().setDebugLog(true);
+                tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                String countryCodeValue = tm.getNetworkCountryIso();
 
 
                 String model = Build.MODEL;
-                checkingPresenter.checkDevice(ip, connectivityManager, model);
-            }
-            else
+                checkingPresenter.checkDevice(ip, connectivityManager, model, countryCodeValue);
+            } else
                 openCap();
-
-        }catch (Exception e) {
-            Log.w("Error", e);
-           openCap();
+        }catch (Exception e){
+            openCap();
         }
+
 
     }
 
