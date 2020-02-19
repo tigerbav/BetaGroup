@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,10 +82,10 @@ public class Checking extends AppCompatActivity implements Imvp.ICheckingView {
 
         setContentView(R.layout.checking_layout);
 
-        connectivityManager = (ConnectivityManager) Checking.this.getSystemService(Context.CONNECTIVITY_SERVICE);;
+        connectivityManager = (ConnectivityManager) Checking.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         DaggerIComponent.builder().build().inject(this);
         checkingPresenter.attachView(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Checking.this);
+        sharedPreferences = getPreferences(MODE_PRIVATE);
         checkingPresenter.setSharedPreferences(sharedPreferences);
 
         try {

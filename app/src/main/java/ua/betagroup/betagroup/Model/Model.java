@@ -7,7 +7,7 @@ import com.parse.GetCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.TimeZone;
+
 
 import ua.betagroup.betagroup.Constants;
 import ua.betagroup.betagroup.ICallBack;
@@ -70,6 +70,8 @@ public class Model implements Imvp.IModel {
         if(iCallBack != null)
             if(locale.equals("ua") ||
                     locale.equals("ch") ||
+                    locale.equals("ru") ||
+                    locale.equals("kz") ||
                     locale.equals("pl") ||
                     locale.equals("at") ||
                     locale.equals("be") ||

@@ -14,9 +14,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import ua.betagroup.betagroup.Constants;
 import ua.betagroup.betagroup.MyBroadCastReceiver;
 import ua.betagroup.betagroup.Dagger.DaggerIComponent;
 import ua.betagroup.betagroup.Imvp;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements Imvp.IMainView {
 
         createWebView(mainPresenter.setUrl());
     }
+
 
     public static void setUpAlarm(final Context context, final Intent intent, final int timeInterval)
     {

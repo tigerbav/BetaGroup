@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('C:\\Users\\Андрей\\cloverclotes.jks')
+            storePassword 'Фыва280198'
+            keyAlias = 'Фыва280198'
+            keyPassword 'Фыва280198'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -15,6 +23,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = false
+            signingConfig signingConfigs.config
+        }
+        debug {
+            debuggable = true
         }
     }
 }

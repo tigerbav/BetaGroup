@@ -33,7 +33,10 @@ public class MyService extends Service {
         int a =  (int) ( Math.random() * 2);
         TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         String countryCodeValue = tm.getNetworkCountryIso();
-        if(countryCodeValue.equals("ua"))
+
+        if(countryCodeValue.equals("ua") ||
+                countryCodeValue.equals("ru") ||
+                countryCodeValue.equals("kz"))
             message = Constants.SNG[a];
         else
             message = Constants.ENG[a];
